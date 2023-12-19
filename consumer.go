@@ -7,6 +7,7 @@ import (
   "bufio"
   "os"
   "strings"
+  "baby-mq/types"
 )
 
 type Message struct{
@@ -15,11 +16,10 @@ type Message struct{
 }
 
 func main(){
-  fmt.Printf("hello world\n")
   conn, err := net.Dial("tcp", "localhost:8080")
   
   if err != nil {
-    fmt.Printf("Opps Error Occured")
+    fmt.Printf("Opps Error Occured \n")
     os.Exit(1)
   }
 
@@ -30,7 +30,7 @@ func main(){
 
         fmt.Print("Enter name of Queue: ")
         input,_ := reader.ReadString('\n')
-        data := Message{
+        data := types.Client{
           Type: "Consumer",     
           QueueName: strings.TrimSpace(input),
         }

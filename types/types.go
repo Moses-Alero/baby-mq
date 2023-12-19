@@ -11,7 +11,7 @@ import (
     Priority int
   }
 
-  type Producer struct{
+  type Client struct{
     Type string
     QueueName string
     Message string

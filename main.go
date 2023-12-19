@@ -1,5 +1,7 @@
   package main
 
+  //this is Technically the message broker
+
   import(
     "errors"
     "net"
@@ -8,17 +10,18 @@
     "time"
     "log"
     "encoding/json"
-    "go-mq/types"
+    "baby-mq/types"
   )
 
   // IMPLEMENTATION OF A MESSAGE QUEUE IN GO
   //IN ALL HONESTY I HAVE NO IDEA WHAT I WANT TO DO LMAO...
-  //BUT I KNOW I WILL GET IT DONE LET GOOOOO
 
- 
+
+
+
+
 
 var QueueStorage = make([]*types.Queue,0) 
-  // add to queue
    
   func NewQueue(name string) *types.Queue {
     q := types.Queue{
@@ -30,17 +33,14 @@ var QueueStorage = make([]*types.Queue,0)
   return &q
 }
 
-//implement the message structure
 
 func main(){
-  fmt.Printf("Hello World \n")
-  
-  fmt.Printf("%s \n", QueueStorage)
-  //read from queue
+  fmt.Printf("This is Baby-Mq baby \n")
   createSocket()
 }
 
 
+//Produce a message and store
 func Produce(payload string, priority int, queueName string) *types.Node{
   message := types.Message{
     Payload: payload,
@@ -57,8 +57,7 @@ func Produce(payload string, priority int, queueName string) *types.Node{
   return &node
 }
 
-//this is the payload function 
-
+//Consume message from queue
 func Consume(name string) (string, error){
   q, err := findQueue(name)
   if err != nil {
@@ -74,9 +73,8 @@ func Consume(name string) (string, error){
   return message, nil
 }
 
-
+//find the queue with the specified name in the queue storage
 func findQueue(name string) (*types.Queue, error){
-  //find the queue with the specified name in the queue storage
   for _, q := range QueueStorage {
     if q.Name == name{
       return q , nil
@@ -84,6 +82,7 @@ func findQueue(name string) (*types.Queue, error){
   }
   return nil, errors.New("No queue named " + name +  " found")
 }
+
 
 func createSocket(){
   //listen to incoming conns
@@ -119,16 +118,10 @@ func createSocket(){
 
   // handleConnection handles logic for a single connection request.
 func handleConnection(conn net.Conn) {
-	// Buffer client input until a newline.
-  fmt.Println("Handling connection")
-
-	// Close left clients.
-	
-  fmt.Println("Lets us see if the decoder blocks execution")
 
   d := json.NewDecoder(conn)
   
-  var msg types.Producer
+  var msg types.Client
 
   decoderErr := d.Decode(&msg)
   if decoderErr != nil{

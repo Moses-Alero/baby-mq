@@ -7,18 +7,14 @@ import(
   "os"
   "encoding/json"
   "strings" 
+  "baby-mq/types"
 )
-type Producer struct{
-   Type      string
-   QueueName string
-   Message   string
-}
 
 func main(){
   conn, err := net.Dial("tcp", "localhost:8080")
 
    if err != nil {
-    fmt.Printf("Opps Error Occured")
+    fmt.Printf("Opps Error Occured \n")
     os.Exit(1)
   }
 
@@ -31,15 +27,13 @@ func main(){
         fmt.Print("Enter Message to send to queue: ")
         message, _ := reader.ReadString('\n')
         
-        data := Producer{
+        data := types.Client{
           Type: "Producer",
           QueueName: strings.TrimSpace(queueName),
           Message: strings.TrimSpace(message),
         }
           
         dataBytes, _ := json.Marshal(data)
-          
-        fmt.Printf("%s \n",dataBytes)
 
         conn.Write(dataBytes)
 
